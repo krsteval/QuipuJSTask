@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<script>
+    /**
+     * @description - function for chekcing number of errors
+     * @param products - name of an item for sale
+     * @param productPrices - productPrices[i] is the price of products[i]
+     * @param productSold  - productSold[j] is the name of a product sold
+     * @param soldPrice - each soldPrice[j] contains the sale price recorded for productSold[j].
+     */
+    function priceCheck(products, productPrices, productSold, soldPrice) {
+        // implemtent check conditions
+        if (products.length < 0) {
+            alert('Check inputs for Products, array is EMPTY!');
+            return;
+        } else if (productPrices.length < 0) {
+            alert('Check inputs for ProductPrices, array is EMPTY!');
+            return;
+        } else if (productSold.length < 0) {
+            alert('Check inputs for ProductSold, array is EMPTY!');
+            return;
+        } else if (soldPrice.length < 0) {
+            alert('Check inputs for SoldPrice, array is EMPTY!');
+            return;
+        }
+        // array of items doesn't have same inputs
+        if (products.length != productPrices.length) {
+            alert('Check inputs for Products data!');
+            return;
+        }
+        // array of items doesn't have same inputs
+        else if (productSold.length != soldPrice.length) {
+            alert('Check inputs for Sold Products data!');
+            return;
+        }
+
+        // Create a dictionary to map each product to its correct price
+        const correctPrices = new Map();
+        for (let i = 0; i < products.length; i++) {
+            correctPrices.set(products[i], productPrices[i]);
+        }
+
+        // Initialize the error count
+        let errors = 0;
+        // reset table content
+        document.getElementById("inputResultTable").innerHTML = '';
+        // Check each sold product's price
+        for (let i = 0; i < productSold.length; i++) {
+            const soldProduct = productSold[i];
+            const recordedPrice = soldPrice[i];
+            // print only once
+            if (i == 0) {
+                console.log('Product\tActual\tExpected\tError');
+            }
+            // Compare the recorded price with the correct price
+            if (correctPrices.get(soldProduct) !== recordedPrice || (correctPrices.get(soldProduct) <= 1.00 || recordedPrice <= 1.00 || correctPrices.get(soldProduct) >= 100000.00 || recordedPrice >= 100000.00)) {
+                // console.log(`ERROR --> Correct price: ${correctPrices.get(soldProduct)} - SoldPriceRecorded: ${recordedPrice}`, soldProduct);
+                console.log(`${soldProduct}\t${recordedPrice}\t${correctPrices.get(soldProduct)}\t\t1`);
+                // append html for table of errors
+                document.getElementById("inputResultTable").innerHTML = document.getElementById("inputResultTable").innerHTML + `${soldProduct}\t${recordedPrice}\t${correctPrices.get(soldProduct)}\t\t1\n`;
+                errors++;
+            } else {
+                console.log(`${soldProduct}\t${recordedPrice}\t${correctPrices.get(soldProduct)}\t`);
+                // append html for table of errors
+                document.getElementById("inputResultTable").innerHTML = document.getElementById("inputResultTable").innerHTML + `${soldProduct}\t${recordedPrice}\t${correctPrices.get(soldProduct)}\t\n`;
+            }
+        }
+
+        return errors;
+    }
+    // void function print frin priceCheck output on the screen 
+    function exampleTest() {
+
+        // Example usage:
+        const products = ['eggs', 'milk', 'cheese'];
+        const productPrices = [2.89, 3.29, 5.79];
+        const productSold = ['eggs', 'eggs', 'cheese', 'milk'];
+        const soldPrice = [2.89, 2.99, 5.97, 3.29];
+
+        const numErrors = priceCheck(products, productPrices, productSold, soldPrice);
+        console.log('NumErrors: ', numErrors);
+        document.getElementById("inputResultOfErrors").innerHTML = 'NumErrors: ' + numErrors;
+    }
+    // convert inputs in to valid arrays and call function for checking number of errors
+    function exampleTestCustom() {
+
+        const products = document.getElementById("products").value.split(',');
+        const productSold = document.getElementById("productSold").value.split(',');
+
+        // try to convert from sting input in to array of floats
+        const productPricesString = document.getElementById("productPrices").value.split(',');
+        const productPrices = productPricesString.map(parseFloat); // For floats - decimal numbers
+        const soldPriceString = document.getElementById("soldPrice").value.split(',');
+        const soldPrice = soldPriceString.map(parseFloat);  // For floats - decimal numbers
+
+        const numErrors = priceCheck(products, productPrices, productSold, soldPrice);
+        console.log('NumErrors: ', numErrors);
+        document.getElementById("inputResultOfErrors").innerHTML = 'NumErrors: ' + numErrors;
+    }
+</script>
+
+<body>
+
+    <h2>Price task</h2>
+    <p>
+    <pre>
+        QUESTION DESCRIPTION
+        There is a shop with old-style cash registers. Rather than scanning items and pulling the price from a
+        database, the price of each item is typed in manually. This method sometimes leads to errors. Given
+        a list of items and their correct prices, compare the prices to those entered when each item was
+        sold. Determine the number of errors in selling prices.
+         
+        Example:
+        products = [&#39;eggs&#39;, &#39;milk&#39;, &#39;cheese&#39;] 
+        productPrices = [2.89, 3.29, 5.79]
+        productSold = [&#39;eggs&#39;, &#39;eggs&#39;, &#39;cheese&#39;, &#39;milk&#39;] 
+        soldPrice = [2.89, 2.99, 5.97, 3.29].
+    </pre>
+    </p>
+    <hr />
+    <!-- Input element to present no of errors -->
+    <p id="inputResultOfErrors"><b>Result will be writen here.</b></p>
+    <br/>
+    <pre id="inputResultTable" style="width: 20%; background: rgba(222, 218, 218, 0.71);">
+
+    </pre>
+    <hr />
+
+    <button type="button" onclick='exampleTest()'>Example input test (click)!</button>
+
+    <hr />
+    <p>Custom input (Insert items like placeholder example):</p>
+    <input type="text" id="products" name="products" placeholder="rice,sugar, ..."><br>
+    <input type="text" id="productPrices" name="productPrices" placeholder="16.2,33,55, ..."><br>
+    <input type="text" id="productSold" name="productSold" placeholder="rice,sugar, ..."><br>
+    <input type="text" id="soldPrice" name="soldPrice" placeholder="16.2,33,55, ..."><br>
+
+    <button type="button" onclick='exampleTestCustom()'>Example custom test (click)!</button>
+</body>
+
+</html>
