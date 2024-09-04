@@ -12,7 +12,7 @@
     <div style="padding: 20px; width: 500px;">
         <form id="signup-form">
             <div class="form-group">
-                <label for="account_type">Account type</label>
+                <label>Account type</label>
                 <fieldset>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="type" id="type_company" value="company"
@@ -122,7 +122,7 @@
             }
 
             // Validate email
-            if (email === "") {
+            if (email === "" || !email.includes('quipu.com')) {
                 errorMessages.push("Email is required.");
             }
 

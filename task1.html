@@ -9,17 +9,17 @@
      * @param soldPrice - each soldPrice[j] contains the sale price recorded for productSold[j].
      */
     function priceCheck(products, productPrices, productSold, soldPrice) {
-        // implemtent check conditions
-        if (products.length < 0) {
+        // implement check conditions
+        if (products.length === 0) {
             alert('Check inputs for Products, array is EMPTY!');
             return;
-        } else if (productPrices.length < 0) {
+        } else if (productPrices.length === 0) {
             alert('Check inputs for ProductPrices, array is EMPTY!');
             return;
-        } else if (productSold.length < 0) {
+        } else if (productSold.length === 0) {
             alert('Check inputs for ProductSold, array is EMPTY!');
             return;
-        } else if (soldPrice.length < 0) {
+        } else if (soldPrice.length === 0) {
             alert('Check inputs for SoldPrice, array is EMPTY!');
             return;
         }
@@ -49,7 +49,7 @@
             const soldProduct = productSold[i];
             const recordedPrice = soldPrice[i];
             // print only once
-            if (i == 0) {
+            if (i === 0) {
                 console.log('Product\tActual\tExpected\tError');
             }
             // Compare the recorded price with the correct price
@@ -76,6 +76,7 @@
         const productPrices = [2.89, 3.29, 5.79];
         const productSold = ['eggs', 'eggs', 'cheese', 'milk'];
         const soldPrice = [2.89, 2.99, 5.97, 3.29];
+
 
         const numErrors = priceCheck(products, productPrices, productSold, soldPrice);
         console.log('NumErrors: ', numErrors);
